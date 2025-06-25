@@ -11,10 +11,10 @@ const {
 const User = require("../models/user.model.js");
 
 const signup = async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name,age,sex, phone,aadhar_number, } = req.body.dto;
 
   try {
-    if (!email || !password || !name) {
+    if (!email || !password || !name || !age || !sex || !phone || !aadhar_number) {
       throw new Error("All fields are required");
     }
 
@@ -33,9 +33,8 @@ const signup = async (req, res) => {
     ).toString();
 
     const user = new User({
-      email,
+      ...req.body.dto,
       password: hashedPassword,
-      name,
       verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
     });

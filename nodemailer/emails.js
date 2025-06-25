@@ -5,9 +5,10 @@ const {
   WELCOME_EMAIL_TEMPLATE,
 } = require("./email_templates.js");
 const { transporter, sender } = require("./nodemailer.config.js");
+const nodemailer = require("nodemailer");
 
 const sendVerificationEmail = async (email, verificationToken) => {
-  const recipient = [{ email }];
+  const recipient = [email];
 
   try {
     const response = await transporter.sendMail({
@@ -21,6 +22,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
     });
 
     console.log("Email sent successfully", response);
+    console.log("Email Preview Link", nodemailer.getTestMessageUrl(response));
   } catch (error) {
     console.error(`Error sending verification`, error);
 
@@ -29,7 +31,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
 };
 
 const sendWelcomeEmail = async (email, name) => {
-  const recipient = [{ email }];
+  const recipient = [email];
 
   try {
     const response = await transporter.sendMail({
@@ -39,6 +41,7 @@ const sendWelcomeEmail = async (email, name) => {
     });
 
     console.log("Welcome email sent successfully", response);
+    console.log("Email Preview Link", nodemailer.getTestMessageUrl(response));
   } catch (error) {
     console.error(`Error sending welcome email`, error);
 
@@ -47,7 +50,7 @@ const sendWelcomeEmail = async (email, name) => {
 };
 
 const sendPasswordResetEmail = async (email, resetURL) => {
-  const recipient = [{ email }];
+  const recipient = [email];
 
   try {
     const response = await transporter.sendMail({
@@ -55,9 +58,9 @@ const sendPasswordResetEmail = async (email, resetURL) => {
       to: recipient,
       subject: "Reset your password",
       html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetURL),
-      category: "Password Reset",
     });
     console.log("Password reset email sent successfully", response);
+    console.log("Welcome email sent successfully", response);
   } catch (error) {
     console.error(`Error sending password reset email`, error);
 
@@ -66,7 +69,7 @@ const sendPasswordResetEmail = async (email, resetURL) => {
 };
 
 const sendResetSuccessEmail = async (email) => {
-  const recipient = [{ email }];
+  const recipient = [email];
 
   try {
     const response = await transporter.sendMail({
@@ -74,10 +77,10 @@ const sendResetSuccessEmail = async (email) => {
       to: recipient,
       subject: "Password Reset Successful",
       html: PASSWORD_RESET_SUCCESS_TEMPLATE,
-      category: "Password Reset",
     });
 
     console.log("Password reset email sent successfully", response);
+    console.log("Welcome email sent successfully", response);
   } catch (error) {
     console.error(`Error sending password reset success email`, error);
 
